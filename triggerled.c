@@ -1,5 +1,6 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #define LED4 5
 #define LED3 3
@@ -20,9 +21,16 @@ void triggerLed(int button, int led){
     }
 }
 
+void print_bin(unsigned char value)
+{
+    for (int i = sizeof(char) * 7; i >= 0; i--)
+        printf("%d", (value & (1 << i)) >> i );
+    putc('\n', stdout);
+}
+
 void blink_led(int led, int time_interval){
     gpio_put(led,1);
-    printf("Hello, world!\n");
+    //printf("Hello, world!\n");
     sleep_ms(time_interval);
     gpio_put(led,0);
     sleep_ms(time_interval);
@@ -55,7 +63,9 @@ void choose_led(int rand_num, int time_space){
 }
 
 void detect_sequence(){
-    gpio_get_all(); //get a mask of all the inputs
+    while(1){
+        
+    }
 }
 
 int main(){
@@ -89,6 +99,7 @@ int main(){
     int *rand_array;
     int temp_array_elements = 1; //we want to start with 1 element
     int time_space = 1000;
+    int MyGPIO;
 
     while(1){
     
@@ -98,7 +109,7 @@ int main(){
             choose_led(rand_array[i], time_space);
         }
 
-        //detect_sequence(*rand_array); //comparing btn pushes with LED lighting sequence
+        detect_sequence(*rand_array); //comparing btn pushes with LED lighting sequence
 
         free(rand_array);
         temp_array_elements++;
